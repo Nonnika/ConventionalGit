@@ -1,3 +1,5 @@
+// Package commit
+// 本包主要为 Commit 相关操作提供可行工具
 package commit
 
 import "fmt"

@@ -1,3 +1,5 @@
+// Package flag
+// 为 Flag 相关操作提供自定义工具
 package flag
 
 import (
