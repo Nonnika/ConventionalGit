@@ -4,8 +4,8 @@ import (
 	"flag"
 	"fmt"
 
-	flag2 "github.com/nonnika/ConventionalGit/model/tools/flag"
 	"github.com/nonnika/ConventionalGit/model/types"
+	flag2 "github.com/nonnika/ConventionalGit/tools/flag"
 )
 
 var version = "dev"
