@@ -21,3 +21,17 @@ var Types = []CommitType{
 	{"o", "chore", "其他杂项维护"},
 	{"v", "revert", "回退之前的提交"},
 }
+
+var IsType = map[string]bool{
+	"f": true,
+	"x": true,
+	"d": true,
+	"s": true,
+	"r": true,
+	"p": true,
+	"t": true,
+	"b": true,
+	"c": true,
+	"o": true,
+	"v": true,
+}

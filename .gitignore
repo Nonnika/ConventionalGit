@@ -1,1 +1,6 @@
+# IDEA
 .idea/
+# ZCode
+.zcodeignore
+# Go 测试文件
+*_test.go
