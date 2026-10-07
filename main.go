@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/nonnika/ConventionalGit/model/types"
+	commit2 "github.com/nonnika/ConventionalGit/tools/commit"
 	flag2 "github.com/nonnika/ConventionalGit/tools/flag"
 )
 
@@ -32,18 +33,11 @@ func main() {
 	flag.Parse()
 
 	if commitType != "" {
-		message := PraseCommit(commitType, *scope, *commit)
+		message := commit2.PraseCommit(commitType, *scope, *commit)
 		fmt.Println(message)
 	}
-}
 
-// PraseCommit 组合 Commit
-func PraseCommit(tp, scope, content string) string {
-	var commit string
-	if scope != "" {
-		commit = fmt.Sprintf("%s(%s): %s", tp, scope, content)
-	} else {
-		commit = fmt.Sprintf("%s: %s", tp, content)
+	if showVersion {
+		fmt.Println(version)
 	}
-	return commit
 }
