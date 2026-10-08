@@ -12,7 +12,7 @@ import (
 func getModifier() ([]cmdline.Status, error) {
 	var Stat []cmdline.Status
 
-	out, err := exec.Command("git", "status", "--porcelain").Output()
+	out, err := exec.Command("git", "-c", "core.quotePath=false", "status", "--porcelain").Output()
 
 	lines := strings.SplitSeq(strings.Trim(string(out), "\n"), "\n")
 
