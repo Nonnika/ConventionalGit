@@ -14,8 +14,8 @@ func ExecCommit(cmt commit.Commit) ([]byte, error) {
 
 func toString(cmt commit.Commit) string {
 	if cmt.Scope == "" {
-		return fmt.Sprintf("%s:%s", cmt.Tp, cmt.Content)
+		return fmt.Sprintf("%s: %s", cmt.Tp, cmt.Content)
 	}
 
-	return fmt.Sprintf("%s(%s):%s", cmt.Tp, cmt.Scope, cmt.Content)
+	return fmt.Sprintf("%s(%s): %s", cmt.Tp, cmt.Scope, cmt.Content)
 }

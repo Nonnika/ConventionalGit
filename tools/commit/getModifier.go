@@ -17,6 +17,10 @@ func getModifier() ([]cmdline.Status, error) {
 	lines := strings.SplitSeq(strings.Trim(string(out), "\n"), "\n")
 
 	for line := range lines {
+		if line == "" {
+			continue
+		}
+
 		mod := line[0:2]
 		Stat = append(Stat, cmdline.Status{Mod: mod, FilePath: line[3:]})
 	}
@@ -30,13 +34,13 @@ func GetModifier() error {
 		return err
 	}
 
-	for _, stat := range Stat {
+	for index, stat := range Stat {
 		col := colors.RED
 		chars := strings.Split(stat.Mod, "")
 		if chars[1] == " " {
 			col = colors.GREEN
 		}
-		fmt.Printf("%s%s%s", col, stat.Mod, colors.END)
+		fmt.Printf("%d %s%s%s", index, col, stat.Mod, colors.END)
 
 		fmt.Println(" " + stat.FilePath)
 	}
