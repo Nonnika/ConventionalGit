@@ -4,3 +4,9 @@
 .zcodeignore
 # Go 测试文件
 *_test.go
+# README
+!README.md
+# Markdown
+*.md
+# build 文件夹
+build/

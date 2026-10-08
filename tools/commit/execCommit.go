@@ -8,8 +8,8 @@ import (
 )
 
 // ExecCommit 执行命令
-func ExecCommit(cmt commit.Commit) error {
-	return exec.Command("git", "commit", "-m", toString(cmt)).Run()
+func ExecCommit(cmt commit.Commit) ([]byte, error) {
+	return exec.Command("git", "commit", "-m", toString(cmt)).CombinedOutput()
 }
 
 func toString(cmt commit.Commit) string {
