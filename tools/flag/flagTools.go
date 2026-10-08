@@ -11,7 +11,7 @@ import (
 
 // PrintDefault 打印所有的 Flag
 func PrintDefault() {
-	fmt.Println("用法：cg [options]")
+	fmt.Println("用法：cg [options]/[commit type]")
 	fmt.Printf("\nOptions:\n")
 
 	flag.VisitAll(func(f *flag.Flag) {
