@@ -55,11 +55,11 @@ func main() {
 			os.Exit(1)
 		}
 		out, err := commit2.ExecAdd(fp)
+		fmt.Println(out)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
-		fmt.Println(out)
 	}
 
 	if showVersion {
