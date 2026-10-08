@@ -32,7 +32,7 @@ func main() {
 	flag.Usage = flag2.PrintDefault
 	flag.Parse()
 
-	if commitType != "" {
+	if commitType != "" && *commit != "" {
 		message := commit2.PraseCommit(commitType, *scope, *commit)
 		fmt.Println(message)
 	}

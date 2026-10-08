@@ -9,6 +9,7 @@ import (
 	"github.com/nonnika/ConventionalGit/model/types"
 )
 
+// PrintDefault 打印所有的 Flag
 func PrintDefault() {
 	fmt.Println("用法：cg [options]")
 	fmt.Printf("\nOptions:\n")
