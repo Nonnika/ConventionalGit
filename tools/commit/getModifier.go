@@ -7,12 +7,18 @@ import (
 
 	"github.com/nonnika/ConventionalGit/model/cmdline"
 	"github.com/nonnika/ConventionalGit/model/colors"
+	"github.com/nonnika/ConventionalGit/tools/git"
 )
 
 func getModifier() ([]cmdline.Status, error) {
 	var Stat []cmdline.Status
-
-	out, err := exec.Command("git", "-c", "core.quotePath=false", "status", "--porcelain").Output()
+	cmd := exec.Command("git", "-c", "core.quotePath=false", "status", "--porcelain")
+	root, err := git.GetRepoRoot()
+	if err != nil {
+		return nil, err
+	}
+	cmd.Dir = root
+	out, err := cmd.CombinedOutput()
 
 	lines := strings.SplitSeq(strings.Trim(string(out), "\n"), "\n")
 
