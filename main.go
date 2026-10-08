@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 
 	commit3 "github.com/nonnika/ConventionalGit/model/commit"
 	"github.com/nonnika/ConventionalGit/model/types"
@@ -20,6 +21,7 @@ func main() {
 	flag.BoolVar(&showModifier, "M", false, "显示当前文档内容文件修改状况")
 	scope := flag.String("scp", "", "代码修改适用的范围（可省略)")
 	commit := flag.String("cmt", "", "代码提交的 Commit")
+	numbers := flag.String("n", "", "需要 Add 的 FilePath 编号")
 
 	// 注册所有短名称
 	for _, tp := range types.Types {
@@ -41,8 +43,23 @@ func main() {
 		out, err := commit2.ExecCommit(cmt)
 		fmt.Println(string(out))
 		if err != nil {
-			fmt.Println(err)
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
 		}
+	}
+
+	if numbers != nil && *numbers != "" {
+		fp, err := commit2.GetFilePath(*numbers)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		out, err := commit2.ExecAdd(fp)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		fmt.Println(out)
 	}
 
 	if showVersion {
@@ -52,7 +69,8 @@ func main() {
 	if showModifier {
 		err := commit2.GetModifier()
 		if err != nil {
-			fmt.Println(err)
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
 		}
 	}
 }
