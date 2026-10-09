@@ -51,6 +51,10 @@ func GetModifier() error {
 		fmt.Println(" " + stat.FilePath)
 	}
 
+	if len(Stat) == 0 {
+		fmt.Printf("%s没有需要提交的内容%s\n", colors.GREEN, colors.END)
+		return nil
+	}
 	fmt.Printf("合计：%s%d%s\n", colors.YELLOW, len(Stat), colors.END)
 	return nil
 }
