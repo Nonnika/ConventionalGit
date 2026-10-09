@@ -2,15 +2,19 @@
 // 本包主要为 Commit 相关操作提供可行工具
 package commit
 
-import "fmt"
+import (
+	"fmt"
+
+	commit3 "github.com/nonnika/ConventionalGit/model/commit"
+)
 
 // PraseCommit 组合 Commit
-func PraseCommit(tp, scope, content string) string {
+func PraseCommit(cmt commit3.Commit) string {
 	var commit string
-	if scope != "" {
-		commit = fmt.Sprintf("%s(%s): %s", tp, scope, content)
+	if cmt.Scope != "" {
+		commit = fmt.Sprintf("%s(%s): %s", cmt.Tp, cmt.Scope, cmt.Content)
 	} else {
-		commit = fmt.Sprintf("%s: %s", tp, content)
+		commit = fmt.Sprintf("%s: %s", cmt.Tp, cmt.Content)
 	}
 	return commit
 }
