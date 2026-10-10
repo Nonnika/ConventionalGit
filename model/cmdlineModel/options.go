@@ -1,4 +1,4 @@
-package cmdline
+package cmdlineModel
 
 type Options struct {
 	ShowVersion  bool

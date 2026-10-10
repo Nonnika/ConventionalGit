@@ -1,11 +1,11 @@
-// Package commit
+// Package commitModel
 // 本包主要为 Commit 相关操作提供可行工具
-package commit
+package commitTools
 
 import (
 	"fmt"
 
-	commit3 "github.com/nonnika/ConventionalGit/model/commit"
+	commit3 "github.com/nonnika/ConventionalGit/model/commitModel"
 )
 
 // PraseCommit 组合 Commit

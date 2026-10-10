@@ -1,4 +1,4 @@
-package commit
+package commitTools
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/nonnika/ConventionalGit/model/colors"
+	"github.com/nonnika/ConventionalGit/model/colorsModel"
 )
 
 var rangeRe = regexp.MustCompile(`^(-?\d+)-(-?\d+)$`)
@@ -42,10 +42,10 @@ func getFilePathByRange(start, end int) ([]string, error) {
 	}
 
 	if start < 0 || start >= len(stat) {
-		return nil, fmt.Errorf("%s左范围不合法%s", colors.RED, colors.END)
+		return nil, fmt.Errorf("%s左范围不合法%s", colorsModel.RED, colorsModel.END)
 	}
 	if end < start || end >= len(stat) {
-		return nil, fmt.Errorf("%s右范围不合法%s", colors.RED, colors.END)
+		return nil, fmt.Errorf("%s右范围不合法%s", colorsModel.RED, colorsModel.END)
 	}
 
 	var filePath []string

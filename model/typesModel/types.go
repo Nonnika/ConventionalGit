@@ -1,6 +1,6 @@
-// Package types
-// 本包声明了常见的 commit types
-package types
+// Package typesModel
+// 本包声明了常见的 commitModel typesModel
+package typesModel
 
 type CommitType struct {
 	Short       string

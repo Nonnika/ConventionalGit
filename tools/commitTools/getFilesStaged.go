@@ -1,4 +1,4 @@
-package commit
+package commitTools
 
 import (
 	"os/exec"
