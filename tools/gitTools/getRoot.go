@@ -1,6 +1,6 @@
-// Package git
+// Package gitTools
 // 本包为 Git 提供辅助工具
-package git
+package gitTools
 
 import (
 	"fmt"
