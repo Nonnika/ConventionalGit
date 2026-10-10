@@ -1,6 +1,7 @@
 package cmdlineModel
 
 type Status struct {
-	Mod      string
-	FilePath string
+	Mod         string
+	FileOldPath string
+	FileNewPath string
 }

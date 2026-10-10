@@ -7,28 +7,35 @@ import (
 
 	"github.com/nonnika/ConventionalGit/model/cmdlineModel"
 	"github.com/nonnika/ConventionalGit/model/colorsModel"
-	"github.com/nonnika/ConventionalGit/tools/git"
+	"github.com/nonnika/ConventionalGit/tools/gitTools"
 )
 
 func getModifier() ([]cmdlineModel.Status, error) {
 	var Stat []cmdlineModel.Status
-	cmd := exec.Command("git", "-c", "core.quotePath=false", "status", "--porcelain")
-	root, err := git.GetRepoRoot()
+	cmd := exec.Command("git", "-c", "core.quotePath=false", "status", "--porcelain", "-z")
+	root, err := gitTools.GetRepoRoot()
 	if err != nil {
 		return nil, err
 	}
 	cmd.Dir = root
 	out, err := cmd.CombinedOutput()
 
-	lines := strings.SplitSeq(strings.Trim(string(out), "\n"), "\n")
+	lines := strings.Split(strings.Trim(string(out), "\x00"), "\x00")
 
-	for line := range lines {
-		if line == "" {
+	rename := false
+	n := len(lines)
+	for i := range n {
+		if rename {
+			Stat[len(Stat)-1].FileOldPath = lines[i]
 			continue
 		}
+		mod := lines[i][0:2]
+		if string(mod[0]) == "R" {
+			rename = true
+		}
 
-		mod := line[0:2]
-		Stat = append(Stat, cmdlineModel.Status{Mod: mod, FilePath: line[3:]})
+		Stat = append(Stat, cmdlineModel.Status{Mod: mod, FileNewPath: lines[i][3:], FileOldPath: lines[i][3:]})
+
 	}
 
 	return Stat, err
@@ -43,12 +50,22 @@ func GetModifier() error {
 	for index, stat := range Stat {
 		col := colorsModel.RED
 		chars := strings.Split(stat.Mod, "")
+		if chars[0] == "R" {
+			col = colorsModel.YELLOW
+		}
+
 		if chars[1] == " " {
 			col = colorsModel.GREEN
 		}
 		fmt.Printf("%d %s%s%s", index, col, stat.Mod, colorsModel.END)
 
-		fmt.Println(" " + stat.FilePath)
+		if chars[0] == "R" {
+			fmt.Printf(" %s -> %s\n", stat.FileOldPath, stat.FileNewPath)
+			return nil
+		}
+
+		fmt.Printf(" %s\n", stat.FileNewPath)
+
 	}
 
 	if len(Stat) == 0 {

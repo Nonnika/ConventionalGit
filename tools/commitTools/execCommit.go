@@ -9,7 +9,7 @@ import (
 
 // ExecCommit 执行命令
 func ExecCommit(cmt commitModel.Commit) ([]byte, error) {
-	return exec.Command("git", "commitModel", "-m", toString(cmt)).CombinedOutput()
+	return exec.Command("git", "commit", "-m", toString(cmt)).CombinedOutput()
 }
 
 func toString(cmt commitModel.Commit) string {

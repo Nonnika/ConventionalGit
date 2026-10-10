@@ -28,7 +28,7 @@ func getFilePathByNumber(nums string) ([]string, error) {
 		if i < 0 || i >= len(stat) {
 			return nil, fmt.Errorf("编号 %d 超出范围（0-%d）", i, len(stat)-1)
 		}
-		filePath = append(filePath, stat[i].FilePath)
+		filePath = append(filePath, stat[i].FileNewPath)
 	}
 
 	return filePath, nil
@@ -51,7 +51,7 @@ func getFilePathByRange(start, end int) ([]string, error) {
 	var filePath []string
 
 	for _, v := range stat[start : end+1] {
-		filePath = append(filePath, v.FilePath)
+		filePath = append(filePath, v.FileNewPath)
 	}
 
 	return filePath, nil

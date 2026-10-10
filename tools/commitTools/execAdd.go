@@ -5,7 +5,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/nonnika/ConventionalGit/tools/git"
+	"github.com/nonnika/ConventionalGit/tools/gitTools"
 )
 
 // ExecAdd 执行 Git add 命令
@@ -29,7 +29,7 @@ func ExecAdd(filePath []string) (string, error) {
 	args := append([]string{"add"}, filePath...)
 	cmd := exec.Command("git", args...)
 
-	root, err := git.GetRepoRoot()
+	root, err := gitTools.GetRepoRoot()
 	if err != nil {
 		return "", err
 	}

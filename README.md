@@ -18,7 +18,7 @@
 从源码构建（需要 Go 环境）：
 
 ```bash
-git clone https://github.com/nonnika/ConventionalGit.git
+gitTools clone https://github.com/nonnika/ConventionalGit.git
 cd ConventionalGit
 make build
 ```
@@ -165,7 +165,7 @@ cg -h
 
 ```bash
 make run-test   # 运行全部测试
-make build      # 构建到 build/，版本号取自 git describe
+make build      # 构建到 build/，版本号取自 gitTools describe
 ```
 
 ## License
