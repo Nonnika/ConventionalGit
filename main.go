@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -39,14 +40,15 @@ func main() {
 	flag.Usage = flagTools.PrintDefault
 	flag.Parse()
 
-	// 处理提交 Commit 方法
-	if options.CommitType != "" && options.Commit != "" {
-		runCommit(options, options.DryRun)
+	// 先按当前状态选择和暂存文件，再提交，避免提交改变文件编号。
+	if options.Numbers != "" {
+		if !runAdd(options) {
+			return
+		}
 	}
 
-	// 处理 Add 方法
-	if options.Numbers != "" {
-		runAdd(options)
+	if options.CommitType != "" && options.Commit != "" {
+		runCommit(options, options.DryRun)
 	}
 
 	if options.ShowVersion {
@@ -77,16 +79,20 @@ func runCommit(options cmdlineModel.Options, dryRun bool) {
 	}
 }
 
-func runAdd(options cmdlineModel.Options) {
+func runAdd(options cmdlineModel.Options) bool {
 	fp, err := commitTools.GetFilePath(options.Numbers)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 	out, err := commitTools.ExecAdd(fp)
+	if errors.Is(err, commitTools.ErrAddCanceled) {
+		return false
+	}
 	fmt.Println(out)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+	return true
 }

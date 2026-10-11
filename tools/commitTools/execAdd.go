@@ -1,12 +1,15 @@
 package commitTools
 
 import (
+	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
 
 	"github.com/nonnika/ConventionalGit/tools/gitTools"
 )
+
+var ErrAddCanceled = errors.New("已取消暂存")
 
 // ExecAdd 执行 Git add 命令
 func ExecAdd(filePath []string) (string, error) {
@@ -23,7 +26,7 @@ func ExecAdd(filePath []string) (string, error) {
 	confirm = strings.ToLower(confirm)
 	if confirm != "y" && confirm != "yes" {
 		fmt.Println("停止！！")
-		return "", nil
+		return "", ErrAddCanceled
 	}
 
 	args := append([]string{"--literal-pathspecs", "add", "--"}, filePath...)
