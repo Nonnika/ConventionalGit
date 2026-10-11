@@ -5,15 +5,15 @@ import (
 
 	"github.com/nonnika/ConventionalGit/model/colorsModel"
 	"github.com/nonnika/ConventionalGit/model/commitModel"
-	commit2 "github.com/nonnika/ConventionalGit/tools/commitTools"
+	"github.com/nonnika/ConventionalGit/tools/commitTools"
 )
 
 func DryRun(cmt commitModel.Commit) error {
-	files, err := commit2.GetFilesStaged()
+	files, err := commitTools.GetFilesStaged()
 	if err != nil {
 		return err
 	}
-	fmt.Printf("%s提交信息:%s %s\n", colorsModel.GREEN, colorsModel.END, commit2.PraseCommit(cmt))
+	fmt.Printf("%s提交信息:%s %s\n", colorsModel.GREEN, colorsModel.END, commitTools.PraseCommit(cmt))
 	if len(files) == 0 {
 		fmt.Printf("%s没有任何文件被暂存%s\n", colorsModel.GREEN, colorsModel.END)
 		return nil
