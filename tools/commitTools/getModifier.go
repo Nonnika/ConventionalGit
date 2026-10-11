@@ -19,6 +19,12 @@ func getModifier() ([]cmdlineModel.Status, error) {
 	}
 	cmd.Dir = root
 	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return nil, fmt.Errorf("读取 Git 状态失败: %w\n%s", err, out)
+	}
+	if len(out) == 0 {
+		return nil, nil
+	}
 
 	lines := strings.Split(strings.Trim(string(out), "\x00"), "\x00")
 
@@ -28,6 +34,9 @@ func getModifier() ([]cmdlineModel.Status, error) {
 		if rename {
 			Stat[len(Stat)-1].FileOldPath = lines[i]
 			continue
+		}
+		if len(lines[i]) < 4 || lines[i][2] != ' ' {
+			return nil, fmt.Errorf("无效的 Git 状态记录: %q", lines[i])
 		}
 		mod := lines[i][0:2]
 		if string(mod[0]) == "R" {
