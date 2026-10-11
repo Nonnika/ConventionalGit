@@ -67,7 +67,10 @@ func main() {
 func runCommit(options cmdlineModel.Options, dryRun bool) {
 	cmt := commitModel.Commit{Tp: options.CommitType, Scope: options.Scope, Content: options.Commit}
 	if dryRun {
-		flagTools.DryRun(cmt)
+		if err := flagTools.DryRun(cmt); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
 		return
 	}
 
