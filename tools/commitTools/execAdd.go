@@ -26,7 +26,7 @@ func ExecAdd(filePath []string) (string, error) {
 		return "", nil
 	}
 
-	args := append([]string{"add"}, filePath...)
+	args := append([]string{"--literal-pathspecs", "add", "--"}, filePath...)
 	cmd := exec.Command("git", args...)
 
 	root, err := gitTools.GetRepoRoot()
