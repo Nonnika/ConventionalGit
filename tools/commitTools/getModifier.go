@@ -11,7 +11,6 @@ import (
 )
 
 func getModifier() ([]cmdlineModel.Status, error) {
-	var Stat []cmdlineModel.Status
 	cmd := exec.Command("git", "-c", "core.quotePath=false", "status", "--porcelain", "-z")
 	root, err := gitTools.GetRepoRoot()
 	if err != nil {
@@ -22,32 +21,31 @@ func getModifier() ([]cmdlineModel.Status, error) {
 	if err != nil {
 		return nil, fmt.Errorf("读取 Git 状态失败: %w\n%s", err, out)
 	}
+	return parseStatus(out)
+}
+
+func parseStatus(out []byte) ([]cmdlineModel.Status, error) {
 	if len(out) == 0 {
 		return nil, nil
 	}
-
-	lines := strings.Split(strings.Trim(string(out), "\x00"), "\x00")
-
-	rename := false
-	n := len(lines)
-	for i := range n {
-		if rename {
-			Stat[len(Stat)-1].FileOldPath = lines[i]
-			continue
-		}
+	var stat []cmdlineModel.Status
+	lines := strings.Split(strings.TrimSuffix(string(out), "\x00"), "\x00")
+	for i := 0; i < len(lines); i++ {
 		if len(lines[i]) < 4 || lines[i][2] != ' ' {
 			return nil, fmt.Errorf("无效的 Git 状态记录: %q", lines[i])
 		}
 		mod := lines[i][0:2]
-		if string(mod[0]) == "R" {
-			rename = true
+		entry := cmdlineModel.Status{Mod: mod, FileNewPath: lines[i][3:], FileOldPath: lines[i][3:]}
+		if strings.ContainsAny(mod, "RC") {
+			i++
+			if i >= len(lines) || lines[i] == "" {
+				return nil, fmt.Errorf("Git 重命名或复制记录缺少原路径")
+			}
+			entry.FileOldPath = lines[i]
 		}
-
-		Stat = append(Stat, cmdlineModel.Status{Mod: mod, FileNewPath: lines[i][3:], FileOldPath: lines[i][3:]})
-
+		stat = append(stat, entry)
 	}
-
-	return Stat, err
+	return stat, nil
 }
 
 func GetModifier() error {
@@ -59,7 +57,7 @@ func GetModifier() error {
 	for index, stat := range Stat {
 		col := colorsModel.RED
 		chars := strings.Split(stat.Mod, "")
-		if chars[0] == "R" {
+		if strings.ContainsAny(stat.Mod, "RC") {
 			col = colorsModel.YELLOW
 		}
 
@@ -68,9 +66,9 @@ func GetModifier() error {
 		}
 		fmt.Printf("%d %s%s%s", index, col, stat.Mod, colorsModel.END)
 
-		if chars[0] == "R" {
+		if strings.ContainsAny(stat.Mod, "RC") {
 			fmt.Printf(" %s -> %s\n", stat.FileOldPath, stat.FileNewPath)
-			return nil
+			continue
 		}
 
 		fmt.Printf(" %s\n", stat.FileNewPath)
