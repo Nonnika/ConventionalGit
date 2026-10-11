@@ -14,6 +14,9 @@ var rangeRe = regexp.MustCompile(`^(-?\d+)-(-?\d+)$`)
 // 将用户选择的 number Path 加入
 func getFilePathByNumber(nums string) ([]string, error) {
 	n := strings.Fields(nums)
+	if len(n) == 0 {
+		return nil, fmt.Errorf("文件编号不能为空")
+	}
 	stat, err := getModifier()
 	if err != nil {
 		return nil, err
@@ -58,6 +61,7 @@ func getFilePathByRange(start, end int) ([]string, error) {
 }
 
 func GetFilePath(nums string) ([]string, error) {
+	nums = strings.TrimSpace(nums)
 	// 如果有范围字符进入范围函数
 	n := rangeRe.FindStringSubmatch(nums)
 	if n != nil {

@@ -13,6 +13,9 @@ var ErrAddCanceled = errors.New("已取消暂存")
 
 // ExecAdd 执行 Git add 命令
 func ExecAdd(filePath []string) (string, error) {
+	if len(filePath) == 0 {
+		return "", fmt.Errorf("未选择任何文件")
+	}
 	var confirm string
 	for _, file := range filePath {
 		fmt.Println(file)
