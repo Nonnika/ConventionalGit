@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/nonnika/ConventionalGit/model/cmdlineModel"
+	"github.com/nonnika/ConventionalGit/model/colorsModel"
 	"github.com/nonnika/ConventionalGit/model/commitModel"
 	"github.com/nonnika/ConventionalGit/model/typesModel"
 	"github.com/nonnika/ConventionalGit/tools/commitTools"
@@ -71,7 +72,8 @@ func main() {
 	}
 
 	if options.ShowVersion {
-		fmt.Println(version)
+		out := fmt.Sprintf("Version: %s\nMotto:%s Will You Will%s", version, colorsModel.GREEN, colorsModel.END)
+		fmt.Println(out)
 	}
 
 	if options.ShowModifier {
